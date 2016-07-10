@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html ng-app="myApp" manifest="stations.appcache.php">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Froschboter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="vendors/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+
+<body ng-controller="aCtrl" ng-init="init()">
+
+  
+
+  <div class="container">
+    
+		<div class="row">
+			{{info}}
+		</div>
+	
+		<div class="row">
+
+				<div class="col-md-8">
+
+					<table>
+						<tr><td>Name</td><td>Abstand (cm)</td></tr>
+						<tr ng-repeat="d in distances">
+							<td>{{d.name}}</td><td>{{d.distance}}</td>
+						</tr>
+					</table> 
+				   
+				</div>
+				<div class="col-md-4">
+					<label>Lese Entfernung
+						<input type="checkbox" ng-model="readDistances"/>
+					</label>
+				</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 text-center">
+				<button ng-click="vor()">Vorwärts</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 text-center">
+				<button ng-click="links()">Links</button>
+				<button ng-click="rechts()">Rechts</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 text-center">
+				<button ng-click="zurueck()">Zurück</button> 
+			</div>
+		</div>
+		
+		<div class="row">
+			<button ng-click="lampeAn()">Lampe An</button>
+			<button ng-click="lampeAus()">Lampe Aus</button>
+		</div>
+
+	</div>
+	
+	<script src="vendors/jquery.js"></script>
+	<script src="vendors/angular.js"></script>
+	<script src="vendors/bootstrap.js"></script>
+	<script src="app.js"></script>
+
+</body>
+
+</html>
