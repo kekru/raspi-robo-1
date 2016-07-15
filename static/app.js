@@ -21,7 +21,7 @@ angular.module('myApp')
 			if($scope.readDistances){
 				$scope.getDistances();
 			}
-		}, 500);
+		}, 800);
 	};
 	
 	$scope.apicall = function(apimethod, callback){

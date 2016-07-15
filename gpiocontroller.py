@@ -7,12 +7,34 @@ class GPIOController:
   def __init__(self):
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(11, GPIO.OUT)
-    GPIO.setup(18, GPIO.OUT)
+    GPIO.setup(15, GPIO.OUT)
+    GPIO.setup(16, GPIO.OUT)
+    GPIO.setup(19, GPIO.OUT)
+    GPIO.setup(21, GPIO.OUT)
+    GPIO.setup(22, GPIO.IN)
+    GPIO.setup(23, GPIO.OUT)
     GPIO.setup(24, GPIO.IN)
+    GPIO.setup(26, GPIO.IN)
 
   def an(self):
     GPIO.output(11, GPIO.HIGH)
     time.sleep(0.25)
+
+  def vor(self):
+    GPIO.output(15, GPIO.HIGH)
+    GPIO.output(16, GPIO.HIGH)
+
+  def links(self):
+    GPIO.output(15, GPIO.HIGH)
+    GPIO.output(16, GPIO.LOW)
+
+  def rechts(self):
+    GPIO.output(15, GPIO.LOW)
+    GPIO.output(16, GPIO.HIGH)
+
+  def zurueck(self):
+    GPIO.output(15, GPIO.LOW)
+    GPIO.output(16, GPIO.LOW)
 
   def aus(self):
     GPIO.output(11, GPIO.LOW)
