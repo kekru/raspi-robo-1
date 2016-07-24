@@ -36,6 +36,7 @@ angular.module('myApp')
 			}
 		  }, function errorCallback(response) {
 			$scope.info = response;
+                        $scope.readDistances = false;
 		  });
 	};
 	

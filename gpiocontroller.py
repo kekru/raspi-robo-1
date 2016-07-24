@@ -53,10 +53,14 @@ class GPIOController:
 
     # speichere Startzeit
     while GPIO.input(echo) == 0:
+      if time.time() - StopZeit > 2:
+        raise Exception('Timeout trigger '+str(trigger)+' echo '+str(echo))
       StartZeit = time.time()
 
     # speichere Ankunftszeit
     while GPIO.input(echo) == 1:
+      if time.time() - StartZeit > 2:
+        raise Exception('Timeout2 trigger '+str(trigger)+' echo '+str(echo))
       StopZeit = time.time()
 
     # Zeit Differenz zwischen Start und Ankunft
