@@ -1,0 +1,3 @@
+curl https://bootstrap.pypa.io/get-pip.py | sudo python
+sudo pip install web.py
+sudo pip install RPi.GPIO
