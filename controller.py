@@ -10,7 +10,9 @@ urls = (
   '/vor', 'vorControl',
   '/links', 'linksControl',
   '/rechts', 'rechtsControl',
-  '/zurueck', 'zurueckControl'
+  '/zurueck', 'zurueckControl',
+  '/modus/(.+)', 'modusControl'
+  
 )
 
 b = GPIOController()
@@ -35,9 +37,9 @@ class ausControl:
 class distanceControl:
   def GET(self):
     cors()
-    d0 = b.distanz(19, 22);
-    d1 = b.distanz(21, 24);
-    d2 = b.distanz(23, 26);
+    d0 = b.distanzVorneLinks();
+    d1 = b.distanzVorneRechts();
+    d2 = b.distanzHinten();
     distances = [{'name':'vorne links','distance':d0},
                  {'name':'vorne rechts', 'distance':d1},
                  {'name':'hinten', 'distance':d2}]
@@ -67,6 +69,16 @@ class zurueckControl:
   def GET(self):
     cors()
     b.zurueck()
+
+class modusControl:
+  def GET(self, modus):
+    cors();
+    if modus == 'bremsassistent':
+      b.bremsassistent()
+    elif modus == 'automatik':
+      b.automatik()
+    else:
+      b.manuell()
 
 def cors():
   web.header('Access-Control-Allow-Origin',      '*')
