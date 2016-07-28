@@ -3,19 +3,18 @@ from threading import Thread
 import time
 import RPi.GPIO as GPIO
 
+MODUS_MANUELL = 0
+MODUS_AUTOMATIK = 1
+MODUS_BREMSASSISTENT = 2
+
+stepCounter = 0
+modus = MODUS_MANUELL
+phase = 0
+
+distanceSensorResult = {19:10000, 21:10000, 23:10000}
+distanceSensorLastCheckTime = {19:0, 21:0, 23:0}
 
 class GPIOController:
-
-  MODUS_MANUELL = 0
-  MODUS_AUTOMATIK = 1
-  MODUS_BREMSASSISTENT = 2
-  
-  stepCounter = 0
-  modus = MODUS_MANUELL
-  phase = 0
-
-  distanceSensorResult = {19:10000, 21:10000, 23:10000}
-  distanceSensorLastCheckTime = {19:0, 21:0, 23:0}
 
   def __init__(self):
     GPIO.setmode(GPIO.BOARD)
@@ -97,34 +96,40 @@ class GPIOController:
   def distanzHinten(self):
     return distanz(23, 26)
 
-  def manuell(self):
-    starteModus(MODUS_MANUELL)
+  def modusRunner(self):
+    print(self.getModus())
+    while modus != MODUS_MANUELL:
+      print('Welt1234'+str(stepCounter))
+      if modus == MODUS_AUTOMATIK:
+        self.automatikStep()
+      else:
+        self.bremsassistentStep()
 
-  def automatik(self):
-    starteModus(MODUS_AUTOMATIK)
+      stepCounter = stepCounter + 1
+      time.sleep(0.25)
+  
 
-  def bremsassistent(self):
-    starteModus(MODUS_BREMSASSISTENT)
+  def getModus(self):
+    return modus  
 
   def starteModus(self, neuerModus):
     modus = neuerModus
     stepCounter = 0
     phase = 0
-
+    
     if modus != MODUS_MANUELL:
-      thread = Thread(target = modusRunner)
+      thread = Thread(target = self.modusRunner)
       thread.start()
 
-  def modusRunner(self):
-    while modus != MODUS_MANUELL:
-      if modus == MODUS_AUTOMATIK:
-        automatikStep()
-      else:
-        bremsassistentStep()
+  def manuell(self):
+    self.starteModus(MODUS_MANUELL)
 
-      stepCounter = stepCounter + 1
-      time.sleep(0.25)
-   
+  def automatik(self):
+    self.starteModus(MODUS_AUTOMATIK)
+
+  def bremsassistent(self):
+    self.starteModus(MODUS_BREMSASSISTENT)
+ 
   def setPhase(self, neuePhase):
     phase = neuePhase
     stepCounter = 0
@@ -133,11 +138,12 @@ class GPIOController:
     if (phase == 'links' or phase == 'rechts') and stepCounter > 8 and randint(0,9) < 7: #after 2 seconds
       vor()
       phase = 'vor'
+      print("vor")
 
     if phase == 'vor' and stepCounter > 4: #check every second
       dVorneLinks = distanzVorneLinks()
       dVorneRechts = distanzVorneRechts()
-
+      print('Links: {0}, Rechts: {1}', dVorneLinks, dVorneRechts)
      
     
        
